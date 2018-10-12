@@ -1,0 +1,17 @@
+# python project
+.venv
+venv
+
+# nodejs project
+
+
+# golang project
+
+
+# common
+log
+logs
+**/*.log
+
+**/bin/**
+**/build/**
