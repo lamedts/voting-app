@@ -14,10 +14,12 @@ type PgDB struct {
 	mutex *sync.RWMutex
 }
 
+var PgDBInstance *PgDB
+
 func NewPgDB() *PgDB {
-	var dbname = "vote"
+	var dbname = "pgdata"
 	var user = "testuser1"
-	var password = "password123"
+	var password = "password123!"
 	var host = "localhost"
 	var port = "5432"
 	var postgresqlConnectionString = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", user, password, host, port, dbname)

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net"
 	"os"
-
+	"voting-app-worker/datastore"
 	pb "voting-app-worker/pb"
 
 	"github.com/golang/glog"
@@ -24,6 +24,8 @@ func init() {
 }
 
 func Run() error {
+	// create db connection
+	datastore.PgDBInstance = datastore.NewPgDB()
 	// create a listener
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%d", 50051))
 	if err != nil {
