@@ -3,40 +3,29 @@ package datastore
 import (
 	"fmt"
 	"sync"
-	"voting-app/voting-app-worker/utils/logger"
-
+	"voting-app/voting-app-worker/config"
 	"voting-app/voting-app-worker/types/datastore"
+	"voting-app/voting-app-worker/utils/logger"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"github.com/sirupsen/logrus"
 )
 
-var dbLogger *logrus.Entry = logger.GetLogger("db")
+var dbLogger = logger.GetLogger("db")
 
 type PgDB struct {
 	*sqlx.DB
 	mutex *sync.RWMutex
 }
-type Votes struct {
-	VoterID int    `db:"voter_id" json:"voter_id"`
-	Vote    string `db:"vote" json:"vote"`
-}
 
 var PgDBInstance *PgDB
 
-func NewPgDB() *PgDB {
-	var dbname = "vote"
-	// var dbname = "pgdata"
-	var user = "testuser1"
-	// var password = "password123!"
-	var password = "password123"
-	var host = "localhost"
-	var port = "5432"
-	var postgresqlConnectionString = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", user, password, host, port, dbname)
+func NewPgDB(pgConfig config.PgConfig) *PgDB {
+	// var postgresqlConnectionString = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", user, password, host, port, dbname)
+	var postgresqlConnectionString = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", pgConfig.User, pgConfig.Password, pgConfig.Host, pgConfig.Port, pgConfig.DBName)
 	sqlxdb, err := sqlx.Connect("postgres", postgresqlConnectionString)
 	if err != nil {
-		dbLogger.Fatalln("Failed to connect to zakkaya database:", err)
+		dbLogger.Fatalln("Failed to connect to database:", err)
 	}
 
 	if err := sqlxdb.Ping(); err != nil {
@@ -66,7 +55,7 @@ func (db *PgDB) GetAllVotes(field string) string {
 	db.mutex.RLock()
 	defer db.mutex.RUnlock()
 
-	votes := []Votes{}
+	votes := []datastore.Votes{}
 	err := db.Select(&votes, "SELECT voter_id, vote FROM votes")
 	if err != nil {
 		dbLogger.Errorf("%#v", err)

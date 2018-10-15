@@ -3,20 +3,19 @@ package main
 import (
 	"fmt"
 	"net"
+	"voting-app/voting-app-worker/config"
 	"voting-app/voting-app-worker/datastore"
 	pb "voting-app/voting-app-worker/pb"
 	"voting-app/voting-app-worker/utils/logger"
 
-	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
 
-var appLogger *logrus.Entry = logger.GetLogger("app")
+var appLogger = logger.GetLogger("app")
 
 func Run() error {
-	appLogger.Info("grpc: 50051")
 	// create db connection
-	datastore.PgDBInstance = datastore.NewPgDB()
+	datastore.PgDBInstance = datastore.NewPgDB(config.AppConfig.PgDB)
 	// create a listener
 	listen, err := net.Listen("tcp", fmt.Sprintf(":%d", 50051))
 	if err != nil {
@@ -34,6 +33,7 @@ func Run() error {
 }
 
 func main() {
+
 	appLogger.Info("start")
 	if err := Run(); err != nil {
 		appLogger.Fatal(err)

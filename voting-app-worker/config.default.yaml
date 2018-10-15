@@ -1,0 +1,7 @@
+log_dir: ./log
+pgdb:
+    dbname: dbname
+    user: user
+    password: password
+    host: host
+    port: port

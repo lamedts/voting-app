@@ -2,12 +2,11 @@ package logger
 
 import (
 	"io"
+	"io/ioutil"
 	"os"
 	"path"
 	"strings"
-	"zakkaya/config"
-
-	"io/ioutil"
+	"voting-app/voting-app-worker/config"
 
 	"github.com/rifflock/lfshook"
 	"github.com/sirupsen/logrus"
@@ -26,44 +25,39 @@ var (
 )
 
 func init() {
+	logPath := config.AppConfig.LogDir
 	setPrimaryOutStream()
 
 	// General hooks
 	appLogHook = lfshook.NewHook(
-		getPathMap(path.Join(config.LOG_PATH, path.Base(os.Args[0])+".log")),
+		getPathMap(path.Join(logPath, "app.log")),
 		&prefixed.TextFormatter{FullTimestamp: true, ForceFormatting: true},
 	)
 
 	warnLogHook = lfshook.NewHook(
 		lfshook.PathMap{
-			logrus.WarnLevel:  path.Join(config.LOG_PATH, "warn.log"),
-			logrus.ErrorLevel: path.Join(config.LOG_PATH, "warn.log"),
-			logrus.FatalLevel: path.Join(config.LOG_PATH, "warn.log"),
-			logrus.PanicLevel: path.Join(config.LOG_PATH, "warn.log"),
+			logrus.WarnLevel:  path.Join(logPath, "warn.log"),
+			logrus.ErrorLevel: path.Join(logPath, "warn.log"),
+			logrus.FatalLevel: path.Join(logPath, "warn.log"),
+			logrus.PanicLevel: path.Join(logPath, "warn.log"),
 		},
 		&prefixed.TextFormatter{FullTimestamp: true, ForceFormatting: true},
 	)
 
 	errorLogHook = lfshook.NewHook(
 		lfshook.PathMap{
-			logrus.ErrorLevel: path.Join(config.LOG_PATH, "error.log"),
-			logrus.FatalLevel: path.Join(config.LOG_PATH, "error.log"),
-			logrus.PanicLevel: path.Join(config.LOG_PATH, "error.log"),
+			logrus.ErrorLevel: path.Join(logPath, "error.log"),
+			logrus.FatalLevel: path.Join(logPath, "error.log"),
+			logrus.PanicLevel: path.Join(logPath, "error.log"),
 		},
-		&prefixed.TextFormatter{FullTimestamp: true, ForceFormatting: true},
-	)
-
-	// Module hooks
-	coreLogHook = lfshook.NewHook(
-		getPathMap(path.Join(config.LOG_PATH, "core.log")),
 		&prefixed.TextFormatter{FullTimestamp: true, ForceFormatting: true},
 	)
 
 }
 
 func setPrimaryOutStream() {
-	zakkayaEnv := os.Getenv("ENV")
-	switch strings.ToUpper(zakkayaEnv) {
+	env := os.Getenv("ENV")
+	switch strings.ToUpper(env) {
 	case "DEBUG", "TEST":
 		logLevel = logrus.DebugLevel
 		primaryOutStream = os.Stdout

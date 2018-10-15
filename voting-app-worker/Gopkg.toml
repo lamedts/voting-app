@@ -60,3 +60,7 @@
 [[constraint]]
   name = "github.com/x-cray/logrus-prefixed-formatter"
   version = "0.5.2"
+
+[[constraint]]
+  name = "gopkg.in/yaml.v2"
+  version = "2.2.1"

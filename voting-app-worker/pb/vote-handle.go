@@ -2,7 +2,6 @@ package pb
 
 import (
 	"voting-app/voting-app-worker/datastore"
-	"voting-app/voting-app-worker/pb"
 	"voting-app/voting-app-worker/utils/logger"
 
 	"github.com/sirupsen/logrus"
@@ -42,6 +41,8 @@ func (s *VoteServer) GetVotes(req *WorkerRequest, stream VoteWorkerService_GetVo
 }
 
 // TODO: next
-func (s *VoteServer) SetVote(context.Context, *pb.Vote) {
-
+func (s *VoteServer) SetVote(context.Context, *Vote) (*VoteStatus, error) {
+	var voteStatus VoteStatus
+	voteStatus.Status = "ok"
+	return &voteStatus, nil
 }
