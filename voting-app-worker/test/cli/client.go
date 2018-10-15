@@ -1,9 +1,10 @@
 package main
 
 import (
+	"io"
 	"log"
 
-	pb "voting-app-worker/pb"
+	pb "voting-app/voting-app-worker/pb"
 
 	"golang.org/x/net/context"
 	"google.golang.org/grpc"
@@ -16,10 +17,21 @@ func main() {
 		log.Fatalf("did not connect: %s", err)
 	}
 	defer conn.Close()
-	c := pb.NewEchoServiceClient(conn)
-	response, err := c.Echo(context.Background(), &pb.EchoMessage{Greeting: "foo"})
+	c := pb.NewVoteWorkerServiceClient(conn)
+	stream, err := c.GetVotesResults(context.Background(), &pb.VoteRequest{Query: "foo"})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
-	log.Printf("Response from server: %s", response)
+	// log.Printf("Response from server: %s", response)
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			log.Println("and now your watch is ended")
+			return
+		}
+		if err != nil {
+			log.Fatal(err)
+		}
+		log.Println(res)
+	}
 }

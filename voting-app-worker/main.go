@@ -1,29 +1,20 @@
 package main
 
 import (
-	"flag"
 	"fmt"
 	"net"
-	"os"
-	"voting-app-worker/datastore"
-	pb "voting-app-worker/pb"
+	"voting-app/voting-app-worker/datastore"
+	pb "voting-app/voting-app-worker/pb"
+	"voting-app/voting-app-worker/utils/logger"
 
-	"github.com/golang/glog"
+	"github.com/sirupsen/logrus"
 	"google.golang.org/grpc"
 )
 
-func usage() {
-	fmt.Fprintf(os.Stderr, "usage: example -stderrthreshold=[INFO|WARN|FATAL] -log_dir=[string]\n")
-	flag.PrintDefaults()
-	os.Exit(2)
-}
-
-func init() {
-	flag.Usage = usage
-	flag.Parse()
-}
+var appLogger *logrus.Entry = logger.GetLogger("app")
 
 func Run() error {
+	appLogger.Info("grpc: 50051")
 	// create db connection
 	datastore.PgDBInstance = datastore.NewPgDB()
 	// create a listener
@@ -31,10 +22,11 @@ func Run() error {
 	if err != nil {
 		return err
 	}
+	appLogger.Info("grpc: 50051")
 	// create a server instance
-	s := pb.EchoServer{}
+	s := pb.VoteServer{}
 	grpcServer := grpc.NewServer()
-	pb.RegisterEchoServiceServer(grpcServer, &s)
+	pb.RegisterVoteWorkerServiceServer(grpcServer, &s)
 	if err := grpcServer.Serve(listen); err != nil {
 		return err
 	}
@@ -42,9 +34,8 @@ func Run() error {
 }
 
 func main() {
-	defer glog.Flush()
-
+	appLogger.Info("start")
 	if err := Run(); err != nil {
-		glog.Fatal(err)
+		appLogger.Fatal(err)
 	}
 }

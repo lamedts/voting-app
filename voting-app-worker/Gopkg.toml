@@ -52,3 +52,11 @@
 [prune]
   go-tests = true
   unused-packages = true
+
+[[constraint]]
+  name = "github.com/sirupsen/logrus"
+  version = "1.1.1"
+
+[[constraint]]
+  name = "github.com/x-cray/logrus-prefixed-formatter"
+  version = "0.5.2"

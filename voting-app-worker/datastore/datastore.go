@@ -3,33 +3,44 @@ package datastore
 import (
 	"fmt"
 	"sync"
+	"voting-app/voting-app-worker/utils/logger"
 
-	"github.com/golang/glog"
+	"voting-app/voting-app-worker/types/datastore"
+
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 )
+
+var dbLogger *logrus.Entry = logger.GetLogger("db")
 
 type PgDB struct {
 	*sqlx.DB
 	mutex *sync.RWMutex
 }
+type Votes struct {
+	VoterID int    `db:"voter_id" json:"voter_id"`
+	Vote    string `db:"vote" json:"vote"`
+}
 
 var PgDBInstance *PgDB
 
 func NewPgDB() *PgDB {
-	var dbname = "pgdata"
+	var dbname = "vote"
+	// var dbname = "pgdata"
 	var user = "testuser1"
-	var password = "password123!"
+	// var password = "password123!"
+	var password = "password123"
 	var host = "localhost"
 	var port = "5432"
 	var postgresqlConnectionString = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", user, password, host, port, dbname)
 	sqlxdb, err := sqlx.Connect("postgres", postgresqlConnectionString)
 	if err != nil {
-		glog.Fatalln("Failed to connect to zakkaya database:", err)
+		dbLogger.Fatalln("Failed to connect to zakkaya database:", err)
 	}
 
 	if err := sqlxdb.Ping(); err != nil {
-		glog.Fatal(err)
+		dbLogger.Fatal(err)
 		return nil
 	}
 
@@ -37,24 +48,31 @@ func NewPgDB() *PgDB {
 	return &pgDB
 }
 
-func (db *PgDB) GetVoteResult(field string) string {
+func (db *PgDB) GetVoteResults() []datastore.VoteResult {
 	db.mutex.RLock()
 	defer db.mutex.RUnlock()
-	var value string
-	err := db.Get(&value, "SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote", field)
-	if err != nil {
-		return ""
+
+	voteResults := []datastore.VoteResult{}
+	err2 := db.Select(&voteResults, "SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote")
+	if err2 != nil {
+		dbLogger.Errorf("%#v", err2)
+		return nil
 	}
-	return value
+	dbLogger.Infof("%+v", voteResults)
+	return voteResults
 }
 
-func (db *PgDB) Vote(field string) string {
+func (db *PgDB) GetAllVotes(field string) string {
 	db.mutex.RLock()
 	defer db.mutex.RUnlock()
-	var value string
-	err := db.Get(&value, "SELECT value from system_metadata WHERE field=$1", field)
+
+	votes := []Votes{}
+	err := db.Select(&votes, "SELECT voter_id, vote FROM votes")
 	if err != nil {
+		dbLogger.Errorf("%#v", err)
 		return ""
 	}
-	return value
+	dbLogger.Infof("%#v", votes)
+
+	return "value"
 }

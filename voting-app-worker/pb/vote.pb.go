@@ -22,60 +22,204 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion2 // please upgrade the proto package
 
-type EchoMessage struct {
-	Greeting             string   `protobuf:"bytes,1,opt,name=greeting,proto3" json:"greeting,omitempty"`
+type WorkerRequest struct {
+	Query                string   `protobuf:"bytes,1,opt,name=query,proto3" json:"query,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *EchoMessage) Reset()         { *m = EchoMessage{} }
-func (m *EchoMessage) String() string { return proto.CompactTextString(m) }
-func (*EchoMessage) ProtoMessage()    {}
-func (*EchoMessage) Descriptor() ([]byte, []int) {
+func (m *WorkerRequest) Reset()         { *m = WorkerRequest{} }
+func (m *WorkerRequest) String() string { return proto.CompactTextString(m) }
+func (*WorkerRequest) ProtoMessage()    {}
+func (*WorkerRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_21d31c94b62a6ac7, []int{0}
 }
 
-func (m *EchoMessage) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_EchoMessage.Unmarshal(m, b)
+func (m *WorkerRequest) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_WorkerRequest.Unmarshal(m, b)
 }
-func (m *EchoMessage) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_EchoMessage.Marshal(b, m, deterministic)
+func (m *WorkerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_WorkerRequest.Marshal(b, m, deterministic)
 }
-func (m *EchoMessage) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_EchoMessage.Merge(m, src)
+func (m *WorkerRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_WorkerRequest.Merge(m, src)
 }
-func (m *EchoMessage) XXX_Size() int {
-	return xxx_messageInfo_EchoMessage.Size(m)
+func (m *WorkerRequest) XXX_Size() int {
+	return xxx_messageInfo_WorkerRequest.Size(m)
 }
-func (m *EchoMessage) XXX_DiscardUnknown() {
-	xxx_messageInfo_EchoMessage.DiscardUnknown(m)
+func (m *WorkerRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_WorkerRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_EchoMessage proto.InternalMessageInfo
+var xxx_messageInfo_WorkerRequest proto.InternalMessageInfo
 
-func (m *EchoMessage) GetGreeting() string {
+func (m *WorkerRequest) GetQuery() string {
 	if m != nil {
-		return m.Greeting
+		return m.Query
+	}
+	return ""
+}
+
+type VoteResults struct {
+	Vote                 string   `protobuf:"bytes,1,opt,name=vote,proto3" json:"vote,omitempty"`
+	Count                int32    `protobuf:"varint,2,opt,name=count,proto3" json:"count,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *VoteResults) Reset()         { *m = VoteResults{} }
+func (m *VoteResults) String() string { return proto.CompactTextString(m) }
+func (*VoteResults) ProtoMessage()    {}
+func (*VoteResults) Descriptor() ([]byte, []int) {
+	return fileDescriptor_21d31c94b62a6ac7, []int{1}
+}
+
+func (m *VoteResults) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_VoteResults.Unmarshal(m, b)
+}
+func (m *VoteResults) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_VoteResults.Marshal(b, m, deterministic)
+}
+func (m *VoteResults) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_VoteResults.Merge(m, src)
+}
+func (m *VoteResults) XXX_Size() int {
+	return xxx_messageInfo_VoteResults.Size(m)
+}
+func (m *VoteResults) XXX_DiscardUnknown() {
+	xxx_messageInfo_VoteResults.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_VoteResults proto.InternalMessageInfo
+
+func (m *VoteResults) GetVote() string {
+	if m != nil {
+		return m.Vote
+	}
+	return ""
+}
+
+func (m *VoteResults) GetCount() int32 {
+	if m != nil {
+		return m.Count
+	}
+	return 0
+}
+
+type Vote struct {
+	VotedId              string   `protobuf:"bytes,1,opt,name=votedId,proto3" json:"votedId,omitempty"`
+	Vote                 string   `protobuf:"bytes,2,opt,name=vote,proto3" json:"vote,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *Vote) Reset()         { *m = Vote{} }
+func (m *Vote) String() string { return proto.CompactTextString(m) }
+func (*Vote) ProtoMessage()    {}
+func (*Vote) Descriptor() ([]byte, []int) {
+	return fileDescriptor_21d31c94b62a6ac7, []int{2}
+}
+
+func (m *Vote) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_Vote.Unmarshal(m, b)
+}
+func (m *Vote) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_Vote.Marshal(b, m, deterministic)
+}
+func (m *Vote) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_Vote.Merge(m, src)
+}
+func (m *Vote) XXX_Size() int {
+	return xxx_messageInfo_Vote.Size(m)
+}
+func (m *Vote) XXX_DiscardUnknown() {
+	xxx_messageInfo_Vote.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_Vote proto.InternalMessageInfo
+
+func (m *Vote) GetVotedId() string {
+	if m != nil {
+		return m.VotedId
+	}
+	return ""
+}
+
+func (m *Vote) GetVote() string {
+	if m != nil {
+		return m.Vote
+	}
+	return ""
+}
+
+type VoteStatus struct {
+	Status               string   `protobuf:"bytes,1,opt,name=status,proto3" json:"status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *VoteStatus) Reset()         { *m = VoteStatus{} }
+func (m *VoteStatus) String() string { return proto.CompactTextString(m) }
+func (*VoteStatus) ProtoMessage()    {}
+func (*VoteStatus) Descriptor() ([]byte, []int) {
+	return fileDescriptor_21d31c94b62a6ac7, []int{3}
+}
+
+func (m *VoteStatus) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_VoteStatus.Unmarshal(m, b)
+}
+func (m *VoteStatus) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_VoteStatus.Marshal(b, m, deterministic)
+}
+func (m *VoteStatus) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_VoteStatus.Merge(m, src)
+}
+func (m *VoteStatus) XXX_Size() int {
+	return xxx_messageInfo_VoteStatus.Size(m)
+}
+func (m *VoteStatus) XXX_DiscardUnknown() {
+	xxx_messageInfo_VoteStatus.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_VoteStatus proto.InternalMessageInfo
+
+func (m *VoteStatus) GetStatus() string {
+	if m != nil {
+		return m.Status
 	}
 	return ""
 }
 
 func init() {
-	proto.RegisterType((*EchoMessage)(nil), "pb.EchoMessage")
+	proto.RegisterType((*WorkerRequest)(nil), "pb.WorkerRequest")
+	proto.RegisterType((*VoteResults)(nil), "pb.VoteResults")
+	proto.RegisterType((*Vote)(nil), "pb.Vote")
+	proto.RegisterType((*VoteStatus)(nil), "pb.VoteStatus")
 }
 
 func init() { proto.RegisterFile("vote.proto", fileDescriptor_21d31c94b62a6ac7) }
 
 var fileDescriptor_21d31c94b62a6ac7 = []byte{
-	// 111 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0xe2, 0x2a, 0xcb, 0x2f, 0x49,
-	0xd5, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0x62, 0x2a, 0x48, 0x52, 0xd2, 0xe4, 0xe2, 0x76, 0x4d,
-	0xce, 0xc8, 0xf7, 0x4d, 0x2d, 0x2e, 0x4e, 0x4c, 0x4f, 0x15, 0x92, 0xe2, 0xe2, 0x48, 0x2f, 0x4a,
-	0x4d, 0x2d, 0xc9, 0xcc, 0x4b, 0x97, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x82, 0xf3, 0x8d, 0x2c,
-	0x21, 0x4a, 0x83, 0x53, 0x8b, 0xca, 0x32, 0x93, 0x53, 0x85, 0xb4, 0xb8, 0x58, 0x40, 0x5c, 0x21,
-	0x7e, 0xbd, 0x82, 0x24, 0x3d, 0x24, 0x33, 0xa4, 0xd0, 0x05, 0x94, 0x18, 0x92, 0xd8, 0xc0, 0x16,
-	0x1a, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x2a, 0x66, 0xfb, 0xca, 0x7e, 0x00, 0x00, 0x00,
+	// 240 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x6c, 0x90, 0xcd, 0x4a, 0x03, 0x41,
+	0x10, 0x84, 0x33, 0x4b, 0xfe, 0x6c, 0xd1, 0x90, 0x46, 0x64, 0xc9, 0x29, 0x0c, 0x06, 0x02, 0xc2,
+	0x22, 0x2a, 0x88, 0x4f, 0x20, 0x5e, 0x67, 0x41, 0xcf, 0x6e, 0xd2, 0x07, 0x51, 0x9c, 0xcd, 0x4c,
+	0x4f, 0xc0, 0xd7, 0xf1, 0x49, 0xa5, 0xe7, 0x27, 0x22, 0xe4, 0x56, 0xd5, 0x5b, 0x5f, 0xb1, 0x35,
+	0x00, 0x7b, 0xcb, 0xd4, 0xf4, 0xce, 0xb2, 0xc5, 0xaa, 0xef, 0xf4, 0x0a, 0xce, 0x5e, 0xad, 0xfb,
+	0x20, 0x67, 0x68, 0x17, 0xc8, 0x33, 0x5e, 0xc0, 0x68, 0x17, 0xc8, 0x7d, 0xd7, 0x6a, 0xa9, 0xd6,
+	0x27, 0x26, 0x19, 0xfd, 0x00, 0xa7, 0x2f, 0x96, 0xc9, 0x90, 0x0f, 0x9f, 0xec, 0x11, 0x61, 0x28,
+	0x3d, 0x39, 0x13, 0xb5, 0x80, 0x1b, 0x1b, 0xbe, 0xb8, 0xae, 0x96, 0x6a, 0x3d, 0x32, 0xc9, 0xe8,
+	0x7b, 0x18, 0x0a, 0x88, 0x35, 0x4c, 0x24, 0xb5, 0x7d, 0xde, 0x66, 0xa8, 0xd8, 0x43, 0x57, 0xf5,
+	0xd7, 0xa5, 0xaf, 0x00, 0x84, 0x6a, 0xf9, 0x8d, 0x83, 0xc7, 0x4b, 0x18, 0xfb, 0xa8, 0x32, 0x9a,
+	0xdd, 0xed, 0x8f, 0x82, 0xb9, 0xc4, 0xd2, 0x80, 0x96, 0xdc, 0xfe, 0x7d, 0x43, 0x78, 0x0d, 0xd3,
+	0x27, 0x62, 0xb9, 0x7b, 0x9c, 0x37, 0x7d, 0xd7, 0xfc, 0xdb, 0xb7, 0x98, 0xca, 0x49, 0xbe, 0xea,
+	0xc1, 0x8d, 0xc2, 0x47, 0x98, 0x95, 0x70, 0xd9, 0x76, 0x84, 0x99, 0x15, 0x26, 0x67, 0x22, 0xba,
+	0x82, 0x49, 0x9b, 0x50, 0x3c, 0x74, 0x2e, 0xce, 0x8b, 0x4a, 0xbf, 0xae, 0x07, 0xdd, 0x38, 0xbe,
+	0xf5, 0xdd, 0x6f, 0x00, 0x00, 0x00, 0xff, 0xff, 0x20, 0x78, 0x8d, 0x3b, 0x79, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -86,66 +230,187 @@ var _ grpc.ClientConn
 // is compatible with the grpc package it is being compiled against.
 const _ = grpc.SupportPackageIsVersion4
 
-// EchoServiceClient is the client API for EchoService service.
+// VoteWorkerServiceClient is the client API for VoteWorkerService service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
-type EchoServiceClient interface {
-	Echo(ctx context.Context, in *EchoMessage, opts ...grpc.CallOption) (*EchoMessage, error)
+type VoteWorkerServiceClient interface {
+	GetVotes(ctx context.Context, in *WorkerRequest, opts ...grpc.CallOption) (VoteWorkerService_GetVotesClient, error)
+	GetVotesResults(ctx context.Context, in *WorkerRequest, opts ...grpc.CallOption) (VoteWorkerService_GetVotesResultsClient, error)
+	SetVote(ctx context.Context, in *Vote, opts ...grpc.CallOption) (*VoteStatus, error)
 }
 
-type echoServiceClient struct {
+type voteWorkerServiceClient struct {
 	cc *grpc.ClientConn
 }
 
-func NewEchoServiceClient(cc *grpc.ClientConn) EchoServiceClient {
-	return &echoServiceClient{cc}
+func NewVoteWorkerServiceClient(cc *grpc.ClientConn) VoteWorkerServiceClient {
+	return &voteWorkerServiceClient{cc}
 }
 
-func (c *echoServiceClient) Echo(ctx context.Context, in *EchoMessage, opts ...grpc.CallOption) (*EchoMessage, error) {
-	out := new(EchoMessage)
-	err := c.cc.Invoke(ctx, "/pb.EchoService/Echo", in, out, opts...)
+func (c *voteWorkerServiceClient) GetVotes(ctx context.Context, in *WorkerRequest, opts ...grpc.CallOption) (VoteWorkerService_GetVotesClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_VoteWorkerService_serviceDesc.Streams[0], "/pb.VoteWorkerService/GetVotes", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &voteWorkerServiceGetVotesClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type VoteWorkerService_GetVotesClient interface {
+	Recv() (*Vote, error)
+	grpc.ClientStream
+}
+
+type voteWorkerServiceGetVotesClient struct {
+	grpc.ClientStream
+}
+
+func (x *voteWorkerServiceGetVotesClient) Recv() (*Vote, error) {
+	m := new(Vote)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *voteWorkerServiceClient) GetVotesResults(ctx context.Context, in *WorkerRequest, opts ...grpc.CallOption) (VoteWorkerService_GetVotesResultsClient, error) {
+	stream, err := c.cc.NewStream(ctx, &_VoteWorkerService_serviceDesc.Streams[1], "/pb.VoteWorkerService/GetVotesResults", opts...)
+	if err != nil {
+		return nil, err
+	}
+	x := &voteWorkerServiceGetVotesResultsClient{stream}
+	if err := x.ClientStream.SendMsg(in); err != nil {
+		return nil, err
+	}
+	if err := x.ClientStream.CloseSend(); err != nil {
+		return nil, err
+	}
+	return x, nil
+}
+
+type VoteWorkerService_GetVotesResultsClient interface {
+	Recv() (*VoteResults, error)
+	grpc.ClientStream
+}
+
+type voteWorkerServiceGetVotesResultsClient struct {
+	grpc.ClientStream
+}
+
+func (x *voteWorkerServiceGetVotesResultsClient) Recv() (*VoteResults, error) {
+	m := new(VoteResults)
+	if err := x.ClientStream.RecvMsg(m); err != nil {
+		return nil, err
+	}
+	return m, nil
+}
+
+func (c *voteWorkerServiceClient) SetVote(ctx context.Context, in *Vote, opts ...grpc.CallOption) (*VoteStatus, error) {
+	out := new(VoteStatus)
+	err := c.cc.Invoke(ctx, "/pb.VoteWorkerService/SetVote", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// EchoServiceServer is the server API for EchoService service.
-type EchoServiceServer interface {
-	Echo(context.Context, *EchoMessage) (*EchoMessage, error)
+// VoteWorkerServiceServer is the server API for VoteWorkerService service.
+type VoteWorkerServiceServer interface {
+	GetVotes(*WorkerRequest, VoteWorkerService_GetVotesServer) error
+	GetVotesResults(*WorkerRequest, VoteWorkerService_GetVotesResultsServer) error
+	SetVote(context.Context, *Vote) (*VoteStatus, error)
 }
 
-func RegisterEchoServiceServer(s *grpc.Server, srv EchoServiceServer) {
-	s.RegisterService(&_EchoService_serviceDesc, srv)
+func RegisterVoteWorkerServiceServer(s *grpc.Server, srv VoteWorkerServiceServer) {
+	s.RegisterService(&_VoteWorkerService_serviceDesc, srv)
 }
 
-func _EchoService_Echo_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(EchoMessage)
+func _VoteWorkerService_GetVotes_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WorkerRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(VoteWorkerServiceServer).GetVotes(m, &voteWorkerServiceGetVotesServer{stream})
+}
+
+type VoteWorkerService_GetVotesServer interface {
+	Send(*Vote) error
+	grpc.ServerStream
+}
+
+type voteWorkerServiceGetVotesServer struct {
+	grpc.ServerStream
+}
+
+func (x *voteWorkerServiceGetVotesServer) Send(m *Vote) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _VoteWorkerService_GetVotesResults_Handler(srv interface{}, stream grpc.ServerStream) error {
+	m := new(WorkerRequest)
+	if err := stream.RecvMsg(m); err != nil {
+		return err
+	}
+	return srv.(VoteWorkerServiceServer).GetVotesResults(m, &voteWorkerServiceGetVotesResultsServer{stream})
+}
+
+type VoteWorkerService_GetVotesResultsServer interface {
+	Send(*VoteResults) error
+	grpc.ServerStream
+}
+
+type voteWorkerServiceGetVotesResultsServer struct {
+	grpc.ServerStream
+}
+
+func (x *voteWorkerServiceGetVotesResultsServer) Send(m *VoteResults) error {
+	return x.ServerStream.SendMsg(m)
+}
+
+func _VoteWorkerService_SetVote_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(Vote)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(EchoServiceServer).Echo(ctx, in)
+		return srv.(VoteWorkerServiceServer).SetVote(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/pb.EchoService/Echo",
+		FullMethod: "/pb.VoteWorkerService/SetVote",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(EchoServiceServer).Echo(ctx, req.(*EchoMessage))
+		return srv.(VoteWorkerServiceServer).SetVote(ctx, req.(*Vote))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-var _EchoService_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "pb.EchoService",
-	HandlerType: (*EchoServiceServer)(nil),
+var _VoteWorkerService_serviceDesc = grpc.ServiceDesc{
+	ServiceName: "pb.VoteWorkerService",
+	HandlerType: (*VoteWorkerServiceServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "Echo",
-			Handler:    _EchoService_Echo_Handler,
+			MethodName: "SetVote",
+			Handler:    _VoteWorkerService_SetVote_Handler,
 		},
 	},
-	Streams:  []grpc.StreamDesc{},
+	Streams: []grpc.StreamDesc{
+		{
+			StreamName:    "GetVotes",
+			Handler:       _VoteWorkerService_GetVotes_Handler,
+			ServerStreams: true,
+		},
+		{
+			StreamName:    "GetVotesResults",
+			Handler:       _VoteWorkerService_GetVotesResults_Handler,
+			ServerStreams: true,
+		},
+	},
 	Metadata: "vote.proto",
 }
