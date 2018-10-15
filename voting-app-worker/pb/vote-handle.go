@@ -2,6 +2,7 @@ package pb
 
 import (
 	"voting-app/voting-app-worker/datastore"
+	types "voting-app/voting-app-worker/types/datastore"
 	"voting-app/voting-app-worker/utils/logger"
 
 	"github.com/sirupsen/logrus"
@@ -41,8 +42,16 @@ func (s *VoteServer) GetVotes(req *WorkerRequest, stream VoteWorkerService_GetVo
 }
 
 // TODO: next
-func (s *VoteServer) SetVote(context.Context, *Vote) (*VoteStatus, error) {
+func (s *VoteServer) SetVote(ctx context.Context, vote *Vote) (*VoteStatus, error) {
 	var voteStatus VoteStatus
-	voteStatus.Status = "ok"
+	insertData := types.Vote{
+		Vote:    vote.Vote,
+		VoterID: vote.VotedID,
+	}
+	if err := datastore.PgDBInstance.InsertVote(insertData); err != nil {
+		voteStatus.Status = "fail"
+	} else {
+		voteStatus.Status = "ok"
+	}
 	return &voteStatus, nil
 }

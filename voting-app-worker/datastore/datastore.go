@@ -4,11 +4,12 @@ import (
 	"fmt"
 	"sync"
 	"voting-app/voting-app-worker/config"
-	"voting-app/voting-app-worker/types/datastore"
+	types "voting-app/voting-app-worker/types/datastore"
 	"voting-app/voting-app-worker/utils/logger"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
+	"github.com/sirupsen/logrus"
 )
 
 var dbLogger = logger.GetLogger("db")
@@ -21,7 +22,6 @@ type PgDB struct {
 var PgDBInstance *PgDB
 
 func NewPgDB(pgConfig config.PgConfig) *PgDB {
-	// var postgresqlConnectionString = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", user, password, host, port, dbname)
 	var postgresqlConnectionString = fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable", pgConfig.User, pgConfig.Password, pgConfig.Host, pgConfig.Port, pgConfig.DBName)
 	sqlxdb, err := sqlx.Connect("postgres", postgresqlConnectionString)
 	if err != nil {
@@ -37,11 +37,11 @@ func NewPgDB(pgConfig config.PgConfig) *PgDB {
 	return &pgDB
 }
 
-func (db *PgDB) GetVoteResults() []datastore.VoteResult {
+func (db *PgDB) GetVoteResults() []types.VoteResult {
 	db.mutex.RLock()
 	defer db.mutex.RUnlock()
 
-	voteResults := []datastore.VoteResult{}
+	voteResults := []types.VoteResult{}
 	err2 := db.Select(&voteResults, "SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote")
 	if err2 != nil {
 		dbLogger.Errorf("%#v", err2)
@@ -55,7 +55,7 @@ func (db *PgDB) GetAllVotes(field string) string {
 	db.mutex.RLock()
 	defer db.mutex.RUnlock()
 
-	votes := []datastore.Votes{}
+	votes := []types.Vote{}
 	err := db.Select(&votes, "SELECT voter_id, vote FROM votes")
 	if err != nil {
 		dbLogger.Errorf("%#v", err)
@@ -64,4 +64,19 @@ func (db *PgDB) GetAllVotes(field string) string {
 	dbLogger.Infof("%#v", votes)
 
 	return "value"
+}
+
+func (db *PgDB) InsertVote(vote types.Vote) error {
+	db.mutex.Lock()
+	defer db.mutex.Unlock()
+
+	if _, err := db.NamedExec(`INSERT INTO votes (voter_id, vote) VALUES (:voter_id, :vote)`, vote); err != nil {
+		dbLogger.WithFields(logrus.Fields{
+			"Flow": "datastore",
+			"func": "insert vote",
+		}).Warn(err)
+		return err
+	}
+
+	return nil
 }

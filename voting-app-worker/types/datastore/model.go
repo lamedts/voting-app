@@ -5,7 +5,7 @@ type VoteResult struct {
 	Count int32  `db:"count"`
 }
 
-type Votes struct {
+type Vote struct {
 	VoterID int32  `db:"voter_id"`
 	Vote    string `db:"vote"`
 	// Id             int       `db:"id"`

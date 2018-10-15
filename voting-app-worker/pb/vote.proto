@@ -9,7 +9,7 @@ message VoteResults {
     int32 count = 2;
 }
 message Vote {
-    string votedId = 1;
+    int32 votedID = 1;
     string vote = 2;
 }
 message VoteStatus {

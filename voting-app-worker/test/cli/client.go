@@ -3,7 +3,6 @@ package main
 import (
 	"io"
 	"log"
-
 	pb "voting-app/voting-app-worker/pb"
 
 	"golang.org/x/net/context"
@@ -18,7 +17,13 @@ func main() {
 	}
 	defer conn.Close()
 	c := pb.NewVoteWorkerServiceClient(conn)
-	stream, err := c.GetVotesResults(context.Background(), &pb.VoteRequest{Query: "foo"})
+	status, setErr := c.SetVote(context.Background(), &pb.Vote{Vote: "dog", VotedID: 87})
+	if setErr != nil {
+		log.Fatalf("cannot insert")
+	}
+	log.Printf("status: %+v", status)
+
+	stream, err := c.GetVotesResults(context.Background(), &pb.WorkerRequest{Query: "foo"})
 	if err != nil {
 		log.Fatalf("Error when calling SayHello: %s", err)
 	}
