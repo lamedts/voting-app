@@ -41,17 +41,25 @@ func (s *VoteServer) GetVotes(req *WorkerRequest, stream VoteWorkerService_GetVo
 	return nil
 }
 
-// TODO: next
 func (s *VoteServer) SetVote(ctx context.Context, vote *Vote) (*VoteStatus, error) {
 	var voteStatus VoteStatus
 	insertData := types.Vote{
 		Vote:    vote.Vote,
 		VoterID: vote.VotedID,
 	}
-	if err := datastore.PgDBInstance.InsertVote(insertData); err != nil {
+	if err := datastore.PgDBInstance.UpsertVote(insertData); err != nil {
 		voteStatus.Status = "fail"
 	} else {
 		voteStatus.Status = "ok"
 	}
 	return &voteStatus, nil
+}
+
+func (s *VoteServer) GetVote(ctx context.Context, vote *Vote) (*Vote, error) {
+	option, err := datastore.PgDBInstance.GetVote(vote.VotedID)
+	if err != nil {
+		return nil, err
+	}
+	vote.Vote = *option
+	return vote, nil
 }

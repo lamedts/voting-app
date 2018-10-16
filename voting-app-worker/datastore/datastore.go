@@ -42,9 +42,8 @@ func (db *PgDB) GetVoteResults() []types.VoteResult {
 	defer db.mutex.RUnlock()
 
 	voteResults := []types.VoteResult{}
-	err2 := db.Select(&voteResults, "SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote")
-	if err2 != nil {
-		dbLogger.Errorf("%#v", err2)
+	if err := db.Select(&voteResults, "SELECT vote, COUNT(id) AS count FROM votes GROUP BY vote"); err != nil {
+		dbLogger.Errorf("%#v", err)
 		return nil
 	}
 	dbLogger.Infof("%+v", voteResults)
@@ -62,21 +61,38 @@ func (db *PgDB) GetAllVotes(field string) string {
 		return ""
 	}
 	dbLogger.Infof("%#v", votes)
-
 	return "value"
 }
 
-func (db *PgDB) InsertVote(vote types.Vote) error {
+func (db *PgDB) UpsertVote(vote types.Vote) error {
 	db.mutex.Lock()
 	defer db.mutex.Unlock()
 
-	if _, err := db.NamedExec(`INSERT INTO votes (voter_id, vote) VALUES (:voter_id, :vote)`, vote); err != nil {
+	if _, err := db.NamedExec(`
+    INSERT INTO votes (voter_id, vote)
+    VALUES (:voter_id, :vote)
+    ON CONFLICT (voter_id) DO UPDATE
+    SET vote = :vote
+    `, vote); err != nil {
 		dbLogger.WithFields(logrus.Fields{
 			"Flow": "datastore",
 			"func": "insert vote",
 		}).Warn(err)
 		return err
 	}
-
 	return nil
+}
+
+func (db *PgDB) GetVote(voterID int32) (*string, error) {
+	db.mutex.RLock()
+	defer db.mutex.RUnlock()
+
+	vote := types.Vote{}
+	err := db.Get(&vote, "SELECT vote, voter_id FROM votes WHERE voter_id = $1", voterID)
+	if err != nil {
+		dbLogger.Errorf("%+v", err)
+		return nil, err
+	}
+	dbLogger.Infof("%#v", vote)
+	return &vote.Vote, nil
 }

@@ -1,8 +1,8 @@
 DROP TABLE IF EXISTS votes;
 
 CREATE TABLE IF NOT EXISTS votes (
-	id              serial						PRIMARY KEY,
-    voter_id        int                         NOT NULL,
+	id              serial,
+    voter_id        int                         NOT NULL PRIMARY KEY,
     vote            VARCHAR(255),
 	name            VARCHAR(255),
     gender          VARCHAR(255),

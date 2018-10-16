@@ -19,4 +19,5 @@ service VoteWorkerService {
     rpc GetVotes(WorkerRequest) returns (stream Vote) {}
     rpc GetVotesResults(WorkerRequest) returns (stream VoteResults) {}
     rpc SetVote(Vote) returns (VoteStatus) {}
+    rpc GetVote(Vote) returns (Vote) {}
 }
