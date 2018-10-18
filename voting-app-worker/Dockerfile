@@ -12,4 +12,5 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /go/bin/voting-app-worker .
 FROM alpine
 COPY --from=builder /go/bin/voting-app-worker /go/bin/voting-app-worker
 COPY config.yaml /go/bin/config.yaml
-ENTRYPOINT ["/go/bin/voting-app-worker"]
+WORKDIR /go/bin
+ENTRYPOINT ["./voting-app-worker"]
