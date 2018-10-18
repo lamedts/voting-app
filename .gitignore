@@ -3,7 +3,7 @@
 venv
 
 # nodejs project
-
+node_modules
 
 # golang project
 vendor*
