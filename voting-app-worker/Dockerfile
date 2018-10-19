@@ -13,4 +13,5 @@ FROM alpine
 COPY --from=builder /go/bin/voting-app-worker /go/bin/voting-app-worker
 COPY config.yaml /go/bin/config.yaml
 WORKDIR /go/bin
+EXPOSE 50051
 ENTRYPOINT ["./voting-app-worker"]

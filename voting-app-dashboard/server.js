@@ -12,7 +12,7 @@ const protoLoader = require("@grpc/proto-loader");
 
 io.set('transports', ['polling']);
 
-let port = process.env.PORT || 4000;
+let port = process.env.PORT || 8081;
 const REMOTE_SERVER = "localhost:50051";
 let pb = grpc.loadPackageDefinition(
   protoLoader.loadSync("../voting-app-pb/vote.proto", {

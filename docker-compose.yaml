@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  vote:
+    build: ./voting-app-voter
+    command: python app.py
+    volumes:
+     - ./voting-app-voter:/app
+    ports:
+      - "5000:8080"
+    networks:
+      - front-tier
+      - back-tier
+
+  dashboard:
+    build: ./voting-app-dashboard
+    command: nodemon server.js
+    volumes:
+      - ./voting-app-dashboard:/app
+    ports:
+      - "5001:8081"
+    networks:
+      - front-tier
+      - back-tier
+
+  worker:
+    build:
+      context: ./voting-app-worker
+    depends_on:
+      - "postgres"
+    networks:
+      - back-tier
+
+  postgres:
+    image: postgres:9.4
+    container_name: db
+    volumes:
+      - "db-data:/var/lib/postgresql/data"
+    networks:
+      - back-tier
+
+volumes:
+  db-data:
+
+networks:
+  front-tier:
+  back-tier:
