@@ -1,13 +1,13 @@
 version: "3"
 
 services:
-  vote:
+  voter:
     build: ./voting-app-voter
     command: python app.py
     volumes:
      - ./voting-app-voter:/app
     ports:
-      - "5000:8080"
+      - 5000:8080
     networks:
       - front-tier
       - back-tier
@@ -18,7 +18,7 @@ services:
     volumes:
       - ./voting-app-dashboard:/app
     ports:
-      - "5001:8081"
+      - 5001:8081
     networks:
       - front-tier
       - back-tier
@@ -26,16 +26,31 @@ services:
   worker:
     build:
       context: ./voting-app-worker
+    restart: on-failure
+    environment:
+      PG_PW: password123
+      PG_USER: testuser1
+      PG_DBNAME: votes
+      PG_HOST: postgres
     depends_on:
-      - "postgres"
+      - postgres
+    links:
+      - postgres
     networks:
       - back-tier
 
   postgres:
-    image: postgres:9.4
-    container_name: db
+    image: postgres:11
+    container_name: postgres
+    environment:
+      POSTGRES_PASSWORD: password123
+      POSTGRES_USER: testuser1
+      POSTGRES_DB: votes
+    ports:
+      - 5432:5432
     volumes:
-      - "db-data:/var/lib/postgresql/data"
+      - ./setup-script/sql/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - db-data:/var/lib/postgresql/data
     networks:
       - back-tier
 

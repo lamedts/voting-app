@@ -1,19 +1,33 @@
 # FROM node:8.9
-FROM grpc/node:1.0-onbuild
+# FROM grpc/node
+# FROM node:8.9-alpine
+# FROM node:alpine
+# FROM mhart/alpine-node:10
+FROM node:9-alpine
 
 # RUN apk add --no-cache make gcc g++ python/
 RUN mkdir -p /app
 WORKDIR /app
 
+# RUN apk update && apk upgrade
+# RUN apk add --no-cache libstdc++ python make g++
+
 RUN npm install -g nodemon
 RUN npm config set registry https://registry.npmjs.org
-COPY package.json /app/package.json
-RUN npm install
-RUN npm cache clean --force
-RUN mv /app/node_modules /node_modules
+# COPY package.json /app/package.json
+COPY . /app
+RUN rm -rf node_modules && rm package-lock.json && npm install
+# RUN npm cache clean --force
+# RUN mv /app/node_modules /node_modules
+# RUN npm ls grpc
+RUN ls -al node_modules/grpc/src/node/extension_binary/
 COPY . /app
 
-ENV PORT 8081
+# RUN npm rebuild --target=8.1.0 --target_platform=linux --target_arch=x64 --target_libc=musl --update-binary
+# RUN npm rebuild --target=9.0.0 --target_libc=musl --target_platform=linux
+# RUN npm rebuild --target=8.1.0 --target_platform=linux --target_arch=x64 --target_libc=glibc --update-binary
+# RUN npm rebuild --target=8.1.0 --target_platform=linux --target_arch=x64 --target_libc=musl --update-binary
+
 EXPOSE 8081
 
-CMD ["node", "server.js"]
+CMD ["nodemon", "server.js"]

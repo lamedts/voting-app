@@ -1,0 +1,23 @@
+syntax = "proto3";
+package pb;
+
+message WorkerRequest {
+    string query = 1;
+}
+message VoteResults {
+    string vote = 1;
+    int32 count = 2;
+}
+message Vote {
+    int32 votedID = 1;
+    string vote = 2;
+}
+message VoteStatus {
+    string status = 1;
+}
+service VoteWorkerService {
+    rpc GetVotes(WorkerRequest) returns (stream Vote) {}
+    rpc GetVotesResults(WorkerRequest) returns (stream VoteResults) {}
+    rpc SetVote(Vote) returns (VoteStatus) {}
+    rpc GetVote(Vote) returns (Vote) {}
+}

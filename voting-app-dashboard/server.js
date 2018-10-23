@@ -15,7 +15,7 @@ io.set('transports', ['polling']);
 let port = process.env.PORT || 8081;
 const REMOTE_SERVER = "localhost:50051";
 let pb = grpc.loadPackageDefinition(
-  protoLoader.loadSync("../voting-app-pb/vote.proto", {
+  protoLoader.loadSync("./pb/vote.proto", {
     keepCase: true,
     longs: String,
     enums: String,
@@ -40,7 +40,7 @@ function getVotes() {
   let res = []
   let getVotesResults = client.GetVotesResults({ query: 'username' })
   getVotesResults.on("data", (msg) => res.push(msg))
-  getVotesResults.on('error', () => console.log("error"));
+  getVotesResults.on('error', () => console.log("getVotesResults error"));
   getVotesResults.on('end', () => {
     io.sockets.emit("vote-result", collectVotesFromResult(res));
   });

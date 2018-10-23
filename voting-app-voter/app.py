@@ -50,7 +50,7 @@ def reset():
 
 
 if __name__ == "__main__":
-    channel = grpc.insecure_channel('localhost:50051')
+    channel = grpc.insecure_channel('worker:50051')
     stub = vote_pb2_grpc.VoteWorkerServiceStub(channel)
     app.run(host='0.0.0.0', port=8080, debug=True, threaded=True)
 

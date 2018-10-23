@@ -2,6 +2,7 @@ package config
 
 import (
 	"io/ioutil"
+	"os"
 
 	"github.com/sirupsen/logrus"
 	yaml "gopkg.in/yaml.v2"
@@ -39,6 +40,20 @@ func newConfig() *Config {
 		logrus.Error("Cannot parse config file '", filename, "'")
 		return nil
 	}
-
+	if env := os.Getenv("PG_DBNAME"); env != "" {
+		config.PgDB.DBName = os.Getenv("PG_DBNAME")
+	}
+	if env := os.Getenv("PG_USER"); env != "" {
+		config.PgDB.User = os.Getenv("PG_USER")
+	}
+	if env := os.Getenv("PG_PW"); env != "" {
+		config.PgDB.Password = os.Getenv("PG_PW")
+	}
+	if env := os.Getenv("PG_HOST"); env != "" {
+		config.PgDB.Host = os.Getenv("PG_HOST")
+	}
+	if env := os.Getenv("PG_PORT"); env != "" {
+		config.PgDB.Port = os.Getenv("PG_PORT")
+	}
 	return config
 }

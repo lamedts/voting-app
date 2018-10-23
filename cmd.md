@@ -6,5 +6,12 @@ go build -i -v -o bin/grpc-server .
 
 psql -U $USERNAME -d $DB_NAME < $SQL_ROLE_SETUP_SCRIPT
 
-docker build -t voting-app/worker .
-docker run --rm voting-app/worker
+docker build -t voting-app/voter .
+docker run --rm -p 8080:8080/tcp voting-app/voter
+
+docker build -t voting-app/dashboard .
+docker run --rm -p 8081:8081/tcp voting-app/dashboard
+
+docker-compose up --build
+docker-compose up
+docker-compose down -v

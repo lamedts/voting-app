@@ -16,7 +16,7 @@
     "body-parser": "^1.14.1",
     "cookie-parser": "^1.4.0",
     "express": "^4.13.3",
-    "grpc": "^1.15.1",
+    "grpc": "1.15.1",
     "method-override": "^2.3.5",
     "socket.io": "^2.0.4"
   },
