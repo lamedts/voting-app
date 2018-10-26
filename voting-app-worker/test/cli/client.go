@@ -22,6 +22,21 @@ func main() {
 		log.Fatalf("cannot insert")
 	}
 	log.Printf("status: %+v", status)
+	status, setErr = c.SetVote(context.Background(), &pb.Vote{Vote: "dog", VotedID: 23})
+	if setErr != nil {
+		log.Fatalf("cannot insert")
+    }
+    log.Printf("status: %+v", status)
+	status, setErr = c.SetVote(context.Background(), &pb.Vote{Vote: "dog", VotedID: 21})
+	if setErr != nil {
+		log.Fatalf("cannot insert")
+	}
+	log.Printf("status: %+v", status)
+	status, setErr = c.SetVote(context.Background(), &pb.Vote{Vote: "cat", VotedID: 1})
+	if setErr != nil {
+		log.Fatalf("cannot insert")
+	}
+	log.Printf("status: %+v", status)
 
 	stream, err := c.GetVotesResults(context.Background(), &pb.WorkerRequest{Query: "foo"})
 	if err != nil {

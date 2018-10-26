@@ -3,29 +3,16 @@ const path = require("path")
 const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
+const axios = require('axios');
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server);
-const grpc = require("grpc");
-const protoLoader = require("@grpc/proto-loader");
 
 io.set('transports', ['polling']);
 
 let port = process.env.PORT || 8081;
-const REMOTE_SERVER = "localhost:50051";
-let pb = grpc.loadPackageDefinition(
-  protoLoader.loadSync("./pb/vote.proto", {
-    keepCase: true,
-    longs: String,
-    enums: String,
-    defaults: true,
-    oneofs: true
-  })
-).pb;
-let client = new pb.VoteWorkerService(
-  REMOTE_SERVER,
-  grpc.credentials.createInsecure()
-);
+// const REST_REMOTE_SERVER = "http://worker:50052";
+const REST_REMOTE_SERVER = "http://127.0.0.1:50052";
 
 io.sockets.on('connection', function (socket) {
   socket.emit('message', { text : 'Welcome!' });
@@ -35,19 +22,21 @@ io.sockets.on('connection', function (socket) {
 });
 getVotes()
 function getVotes() {
-  let res = []
-  let getVotesResults = client.GetVotesResults({ query: 'username' })
-  getVotesResults.on("data", (msg) => res.push(msg))
-  getVotesResults.on('error', () => console.log("getVotesResults error"));
-  getVotesResults.on('end', () => {
-    io.sockets.emit("vote-result", collectVotesFromResult(res));
+  axios.post(REST_REMOTE_SERVER + '/v1/results', {
+    "query": "result"
+  }).then(function (response) {
+    console.log(response.data);
+    console.log(JSON.parse(response.data));
+    io.sockets.emit("vote-result", collectVotesFromResult(JSON.parse(response.data)));
+  }).catch(function (error) {
+    console.log(error);
   });
 
-  setTimeout(() => getVotes(client) , 1000);
+  setTimeout(() => getVotes() , 1000);
 }
 
 function collectVotesFromResult(result) {
-  var votes = {a: 0, b: 0};
+  let votes = {a: 0, b: 0};
   for (idx in result) {
     if (result[idx].vote === 'cat') votes.a = result[idx].count
     if (result[idx].vote === 'dog') votes.b = result[idx].count
@@ -75,6 +64,6 @@ app.get('/', function (req, res) {
 });
 
 server.listen(port, function () {
-  var port = server.address().port;
+  let port = server.address().port;
   console.log('App running on port ' + port);
 });

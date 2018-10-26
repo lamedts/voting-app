@@ -1,4 +1,19 @@
-protoc -I ../voting-app-pb/ ../voting-app-pb/vote.proto --go_out=plugins=grpc:pb
+
+protoc -I /usr/local/include -I. \
+  -I ./vendor \
+  -I $GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --go_out=plugins=grpc:. \
+  ./pb/vote.proto
+
+protoc -I/usr/local/include -I. \
+  -I ./vendor \
+  -I $GOPATH/src/github.com/grpc-ecosystem/grpc-gateway/third_party/googleapis \
+  --grpc-gateway_out=logtostderr=true:. \
+  ./pb/vote.proto
+
+
+
+
 python -m grpc_tools.protoc -I../voting-app-pb --python_out=. --grpc_python_out=. ../voting-app-pb/vote.proto
 
 go run main.go -stderrthreshold=INFO

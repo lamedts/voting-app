@@ -1,6 +1,8 @@
 syntax = "proto3";
 package pb;
 
+import "google/api/annotations.proto";
+
 message WorkerRequest {
     string query = 1;
 }
@@ -16,8 +18,29 @@ message VoteStatus {
     string status = 1;
 }
 service VoteWorkerService {
-    rpc GetVotes(WorkerRequest) returns (stream Vote) {}
-    rpc GetVotesResults(WorkerRequest) returns (stream VoteResults) {}
-    rpc SetVote(Vote) returns (VoteStatus) {}
-    rpc GetVote(Vote) returns (Vote) {}
+    rpc GetVotes(WorkerRequest) returns (stream Vote) {
+        // TODO: check if it is implemented
+        option (google.api.http) = {
+            post: "/v1/votes"
+            body: "*"
+          };
+    }
+    rpc GetVotesResults(WorkerRequest) returns (stream VoteResults) {
+        option (google.api.http) = {
+            post: "/v1/results"
+            body: "*"
+          };
+    }
+    rpc SetVote(Vote) returns (VoteStatus) {
+        option (google.api.http) = {
+            post: "/v1/vote"
+            body: "*"
+          };
+    }
+    rpc GetVote(Vote) returns (Vote) {
+        option (google.api.http) = {
+            post: "/v1/vote/{votedID}"
+            body: "*"
+          };
+    }
 }

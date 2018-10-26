@@ -26,32 +26,24 @@
 
 
 [[constraint]]
-  branch = "master"
-  name = "github.com/golang/glog"
-
-[[constraint]]
   name = "github.com/golang/protobuf"
   version = "1.2.0"
 
 [[constraint]]
-  branch = "master"
+  name = "github.com/grpc-ecosystem/grpc-gateway"
+  version = "1.5.1"
+
+[[constraint]]
   name = "github.com/jmoiron/sqlx"
+  version = "1.2.0"
 
 [[constraint]]
   name = "github.com/lib/pq"
   version = "1.0.0"
 
 [[constraint]]
-  branch = "master"
-  name = "golang.org/x/net"
-
-[[constraint]]
-  name = "google.golang.org/grpc"
-  version = "1.15.0"
-
-[prune]
-  go-tests = true
-  unused-packages = true
+  name = "github.com/rifflock/lfshook"
+  version = "2.4.0"
 
 [[constraint]]
   name = "github.com/sirupsen/logrus"
@@ -62,5 +54,21 @@
   version = "0.5.2"
 
 [[constraint]]
+  branch = "master"
+  name = "golang.org/x/net"
+
+[[constraint]]
+  branch = "master"
+  name = "google.golang.org/genproto"
+
+[[constraint]]
+  name = "google.golang.org/grpc"
+  version = "1.16.0"
+
+[[constraint]]
   name = "gopkg.in/yaml.v2"
   version = "2.2.1"
+
+[prune]
+  go-tests = true
+  unused-packages = true

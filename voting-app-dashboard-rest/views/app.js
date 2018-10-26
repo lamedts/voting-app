@@ -4,20 +4,13 @@ var socket = io.connect({transports:['polling']});
 var bg1 = document.getElementById('background-stats-1');
 var bg2 = document.getElementById('background-stats-2');
 
-console.log('check 1', socket.connected);
-
-socket.on('connect', function() {
-  console.log('check 2', socket.connected);
-});
-
 app.controller('statsCtrl', function($scope){
   $scope.aPercent = 50;
   $scope.bPercent = 50;
-  // console.log('json')
+
   var updateScores = function(){
-    // console.log('json')
     socket.on('vote-result', function (data) {
-      // console.log(json)
+      console.log(json)
     //    data = JSON.parse(json);
        var a = parseInt(data.a || 0); // cat
        var b = parseInt(data.b || 0); // dog
@@ -40,7 +33,6 @@ app.controller('statsCtrl', function($scope){
     updateScores();
   };
   socket.on('message',function(data){
-    console.log(data)
     init();
   });
 });
