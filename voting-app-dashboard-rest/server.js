@@ -4,6 +4,7 @@ const cookieParser = require('cookie-parser')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const axios = require('axios');
+// const buffer = require('buffer');
 const app = express()
 const server = require('http').Server(app)
 const io = require('socket.io')(server);
@@ -22,12 +23,27 @@ io.sockets.on('connection', function (socket) {
 });
 getVotes()
 function getVotes() {
-  axios.post(REST_REMOTE_SERVER + '/v1/results', {
-    "query": "result"
+  axios({
+    method: 'post',
+    url: REST_REMOTE_SERVER + '/v1/results',
+    data: {"query": "result"},
   }).then(function (response) {
-    console.log(response.data);
-    console.log(JSON.parse(response.data));
-    io.sockets.emit("vote-result", collectVotesFromResult(JSON.parse(response.data)));
+    // var buffer = new Buffer(response.data, 'binary');
+    // console.log(response.data);
+    // console.log( typeof response.data );
+    let eles = response.data.split('\n')
+    // var textdata = buffer.toString();
+    // console.log(JSON.stringify(textdata));
+    let result = []
+    for (let idx in eles) {
+      if (eles[idx] != '') {
+        // console.log(eles.)
+        result.push(JSON.parse(eles[idx]).result)
+      }
+    }
+    // console.log(result)
+    // console.log(JSON.parse(response.data));
+    io.sockets.emit("vote-result", collectVotesFromResult(result));
   }).catch(function (error) {
     console.log(error);
   });

@@ -33,6 +33,7 @@ io.sockets.on('connection', function (socket) {
     socket.join(data.channel);
   });
 });
+
 getVotes()
 function getVotes() {
   let res = []

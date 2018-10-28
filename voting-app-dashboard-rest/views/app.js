@@ -10,21 +10,21 @@ app.controller('statsCtrl', function($scope){
 
   var updateScores = function(){
     socket.on('vote-result', function (data) {
-      console.log(json)
-    //    data = JSON.parse(json);
-       var a = parseInt(data.a || 0); // cat
-       var b = parseInt(data.b || 0); // dog
+      // console.log(data)
+      // data = JSON.parse(json);
+      var a = parseInt(data.a || 0); // cat
+      var b = parseInt(data.b || 0); // dog
 
-       var percentages = getPercentages(a, b);
+      var percentages = getPercentages(a, b);
 
-       bg1.style.width = percentages.a + "%";
-       bg2.style.width = percentages.b + "%";
+      bg1.style.width = percentages.a + "%";
+      bg2.style.width = percentages.b + "%";
 
-       $scope.$apply(function () {
-         $scope.aPercent = percentages.a;
-         $scope.bPercent = percentages.b;
-         $scope.total = a + b;
-       });
+      $scope.$apply(function () {
+        $scope.aPercent = percentages.a;
+        $scope.bPercent = percentages.b;
+        $scope.total = a + b;
+      });
     });
   };
 

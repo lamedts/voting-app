@@ -1,37 +1,29 @@
 var app = angular.module('catsvsdogs', []);
-var socket = io.connect({transports:['polling']});
+var socket = io.connect('http://localhost:8081', {transports:['polling']});
 
 var bg1 = document.getElementById('background-stats-1');
 var bg2 = document.getElementById('background-stats-2');
 
-console.log('check 1', socket.connected);
-
-socket.on('connect', function() {
-  console.log('check 2', socket.connected);
-});
-
 app.controller('statsCtrl', function($scope){
   $scope.aPercent = 50;
   $scope.bPercent = 50;
-  // console.log('json')
   var updateScores = function(){
-    // console.log('json')
     socket.on('vote-result', function (data) {
       // console.log(json)
-    //    data = JSON.parse(json);
-       var a = parseInt(data.a || 0); // cat
-       var b = parseInt(data.b || 0); // dog
+      // data = JSON.parse(json);
+      var a = parseInt(data.a || 0); // cat
+      var b = parseInt(data.b || 0); // dog
 
-       var percentages = getPercentages(a, b);
+      var percentages = getPercentages(a, b);
 
-       bg1.style.width = percentages.a + "%";
-       bg2.style.width = percentages.b + "%";
+      bg1.style.width = percentages.a + "%";
+      bg2.style.width = percentages.b + "%";
 
-       $scope.$apply(function () {
-         $scope.aPercent = percentages.a;
-         $scope.bPercent = percentages.b;
-         $scope.total = a + b;
-       });
+      $scope.$apply(function () {
+        $scope.aPercent = percentages.a;
+        $scope.bPercent = percentages.b;
+        $scope.total = a + b;
+      });
     });
   };
 
@@ -39,8 +31,7 @@ app.controller('statsCtrl', function($scope){
     document.body.style.opacity=1;
     updateScores();
   };
-  socket.on('message',function(data){
-    console.log(data)
+  socket.on('vote-result',function(data){
     init();
   });
 });

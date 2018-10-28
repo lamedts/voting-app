@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "voting-app-dashboard",
   "repository": {},
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -19,7 +19,8 @@
     "express": "^4.13.3",
     "grpc": "1.15.1",
     "method-override": "^2.3.5",
-    "socket.io": "^2.0.4"
+    "socket.io": "^2.0.4",
+    "socket.io-client": "^2.1.1"
   },
   "devDependencies": {
     "nodemon": "^1.18.4"
