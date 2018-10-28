@@ -12,11 +12,11 @@ services:
       - front-tier
       - back-tier
 
-  dashboard:
-    build: ./voting-app-dashboard
-    command: nodemon server.js
+  dashboard-rest:
+    build: ./voting-app-dashboard-rest
+    command: nodemon
     volumes:
-      - ./voting-app-dashboard:/app
+      - ./voting-app-dashboard-rest:/app
     ports:
       - 5001:8081
     networks:

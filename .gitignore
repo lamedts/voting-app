@@ -1,6 +1,10 @@
 # python project
 .venv
 venv
+__pycache__
+**/*.pyc
+*pyc
+*.pyc
 
 # nodejs project
 node_modules

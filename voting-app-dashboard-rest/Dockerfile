@@ -32,8 +32,8 @@ RUN npm install
 # RUN npm rebuild --target=9.0.0 --target_libc=musl --target_platform=linux
 # RUN npm rebuild --target=8.1.0 --target_platform=linux --target_arch=x64 --target_libc=glibc --update-binary
 # RUN npm rebuild --target=8.1.0 --target_platform=linux --target_arch=x64 --target_libc=musl --update-binary
-RUN ls -al .
-RUN ls -al node_modules/grpc/src/node/extension_binary/
+# RUN ls -al .
+# RUN ls -al node_modules/grpc/src/node/extension_binary/
 
 EXPOSE 8081
 

@@ -12,8 +12,8 @@ const io = require('socket.io')(server);
 io.set('transports', ['polling']);
 
 let port = process.env.PORT || 8081;
-// const REST_REMOTE_SERVER = "http://worker:50052";
-const REST_REMOTE_SERVER = "http://127.0.0.1:50052";
+const REST_REMOTE_SERVER = "http://worker:50052";
+// const REST_REMOTE_SERVER = "http://127.0.0.1:50052";
 
 io.sockets.on('connection', function (socket) {
   socket.emit('message', { text : 'Welcome!' });
@@ -28,21 +28,19 @@ function getVotes() {
     url: REST_REMOTE_SERVER + '/v1/results',
     data: {"query": "result"},
   }).then(function (response) {
-    // var buffer = new Buffer(response.data, 'binary');
-    // console.log(response.data);
-    // console.log( typeof response.data );
-    let eles = response.data.split('\n')
-    // var textdata = buffer.toString();
-    // console.log(JSON.stringify(textdata));
+    // TODO: different version has different type of response
     let result = []
-    for (let idx in eles) {
-      if (eles[idx] != '') {
-        // console.log(eles.)
-        result.push(JSON.parse(eles[idx]).result)
+    if (typeof response.data === 'string' || response.data instanceof String) {
+      let eles = (response.data) ? response.data.split('\n') : ''
+      for (let idx in eles) {
+        if (eles[idx] != '') {
+          result.push(JSON.parse(eles[idx]).result)
+        }
       }
+    } else {
+      result.push(response.data.result)
     }
-    // console.log(result)
-    // console.log(JSON.parse(response.data));
+
     io.sockets.emit("vote-result", collectVotesFromResult(result));
   }).catch(function (error) {
     console.log(error);
