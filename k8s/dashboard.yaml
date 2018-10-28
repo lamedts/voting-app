@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+  namespace: voting-app
+  labels:
+    app: dashboard
+spec:
+  type: LoadBalancer
+  ports:
+    -
+      port: 5001
+      targetPort: 80
+      name: dashboard
+  selector:
+    app: dashboard
+  # clusterIP: None
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: dashboard
+  namespace: voting-app
+  labels:
+    app: dashboard
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dashboard
+    spec:
+      containers:
+      - name: dashboard
+        image: voting-app_dashboard-rest:before
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8081
+          name: dashboard

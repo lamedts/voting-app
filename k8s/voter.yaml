@@ -1,0 +1,40 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: voter
+  namespace: voting-app
+  labels:
+    apps: voter
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 5000
+      targetPort: 80
+      name: voter
+  selector:
+    app: voter
+  # clusterIP: None
+---
+apiVersion: apps/v1beta1
+kind: Deployment
+metadata:
+  name: voter
+  namespace: voting-app
+  labels:
+    app: voter
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: voter
+    spec:
+      containers:
+        - name: voter
+          image: voting-app_voter:before
+          imagePullPolicy: Never
+          ports:
+            -
+              containerPort: 8080
+              name: voter

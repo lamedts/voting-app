@@ -30,3 +30,6 @@ docker run --rm -p 8081:8081/tcp voting-app/dashboard
 docker-compose up --build
 docker-compose up
 docker-compose down -v
+
+kubectl get pods --namespace=kube-system
+kubectl port-forward kubernetes-dashboard-7b9c7bc8c9-2pwxh 8443:8443 --namespace=kube-system
